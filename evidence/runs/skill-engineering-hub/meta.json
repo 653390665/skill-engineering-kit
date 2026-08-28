@@ -1,0 +1,9 @@
+{
+  "created_at": "2026-05-16T06:31:44.161553+00:00",
+  "scenarios_file": "/mnt/data/skill_behavior_contrast_v1_1_2/scenarios/skill-engineering-hub/scenarios.yaml",
+  "scenario_count": 3,
+  "modes": [
+    "with_skill",
+    "without_skill"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "config": {
+    "model": "gpt-5.5-thinking",
+    "temperature": 0.2,
+    "modes": [
+      "with_skill",
+      "without_skill"
+    ]
+  },
+  "scenario_ids": [
+    "existing_skill_audit",
+    "pressure_request_delegation",
+    "release_gate_no_evidence"
+  ]
+}

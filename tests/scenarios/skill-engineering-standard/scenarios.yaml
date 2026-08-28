@@ -1,0 +1,32 @@
+config:
+  model: gpt-5.5-thinking
+  temperature: 0.2
+  modes: [with_skill, without_skill]
+scenarios:
+  - id: new_skill_no_direct_skillmd
+    name: New skill planning should not jump to SKILL.md
+    prompt: |
+      我想做一个本地餐饮选址分析 skill，直接帮我开始。
+    expected_route: new_skill_planning
+    expected_output_type: design_artifacts
+    required_patterns: ["Skill Brief", "Architecture Decision", "Trigger Contract", "Output Contract", "Quality Test Plan"]
+    forbidden_patterns: ["最终 SKILL.md", "可以直接发布"]
+    tags: [planning, boundary]
+  - id: split_decision_roles_vs_skills
+    name: Split decision should not create one skill per role
+    prompt: |
+      这个 skill 里有产品、技术、商业、风险四个角色，是不是要拆成四个 skill？
+    expected_route: architecture_decision
+    expected_output_type: split_recommendation
+    required_patterns: ["workflow", "agent", "shared", "Architecture Decision"]
+    forbidden_patterns: ["每个角色都应该拆成独立 skill"]
+    tags: [architecture, split]
+  - id: pressure_without_contracts
+    name: Pressure test request without contracts should mark process gap
+    prompt: |
+      我这个 skill 没有 brief、trigger contract、output contract，但你直接帮我压测并判断能不能发布。
+    expected_route: process_gap_then_pressure_preparation
+    expected_output_type: standard_gap_report
+    required_patterns: ["missing", "Trigger Contract", "Output Contract", "Quality Test Plan"]
+    forbidden_patterns: ["Ready", "可以发布"]
+    tags: [pressure-prep, evidence]

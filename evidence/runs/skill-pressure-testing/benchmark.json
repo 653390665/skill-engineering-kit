@@ -1,0 +1,16 @@
+{
+  "config": {
+    "model": "gpt-5.5-thinking",
+    "temperature": 0.2,
+    "modes": [
+      "with_skill",
+      "without_skill"
+    ]
+  },
+  "scenario_ids": [
+    "explicit_release_pressure",
+    "creation_decoy",
+    "static_only_doc_patch",
+    "contaminated_run"
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Pressure Testing"
+  short_description: "Stress-test skills before release"
+  default_prompt: "Stress-test this skill with installation, trigger, routing, boundary, regression, and execution checks."

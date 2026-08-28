@@ -1,0 +1,93 @@
+config:
+  model: gpt-5.5-thinking
+  temperature: 0.2
+  modes:
+    - with_skill
+    - without_skill
+
+scenarios:
+  - id: explicit_release_pressure
+    name: Explicit release pressure test request
+    prompt: |
+      请对这个已有 skill 包做发布前压力测试，告诉我能不能发布。
+    expected_route: pressure_test_release_gate
+    expected_output_type: pressure_test_report
+    required_patterns:
+      - Acceptance Criteria
+      - Installability
+      - Scenario Results
+      - P0
+      - Re-test
+    forbidden_patterns:
+      - 可以直接发布
+      - 无需检查
+    assertions:
+      - type: route
+        value: uses pressure-testing rather than casual review
+      - type: evidence
+        value: names inspected files or missing artifacts
+    tags:
+      - release-gate
+      - evidence
+
+  - id: creation_decoy
+    name: Skill creation should not trigger pressure testing
+    prompt: |
+      帮我创建一个餐厅菜单分析 skill，从零开始生成。
+    expected_route: skill_planning_or_creation
+    expected_output_type: route_explanation_or_creation_brief
+    required_patterns:
+      - 创建
+      - 规划
+      - 压力测试
+    forbidden_patterns:
+      - Scenario Results
+      - with-skill
+      - without-skill
+    assertions:
+      - type: trigger_precision
+        value: does not use pressure testing before a skill exists
+    tags:
+      - negative-trigger
+      - decoy
+
+  - id: static_only_doc_patch
+    name: Documentation-only patch should use static scope
+    prompt: |
+      我只改了 README 和 MANIFEST，帮我压测一下包是否干净。
+    expected_route: static_installability_check
+    expected_output_type: static_audit
+    required_patterns:
+      - README
+      - MANIFEST
+      - installability
+      - smallest scope
+    forbidden_patterns:
+      - full benchmark
+      - without-skill comparison is required
+    assertions:
+      - type: scope_control
+        value: uses static checks rather than unnecessary full benchmark
+    tags:
+      - packaging
+      - scope
+
+  - id: contaminated_run
+    name: Contaminated run should not be accepted
+    prompt: |
+      我把 grading-card 和正确答案都给测试 agent 看了，它输出通过了，可以算压测通过吗？
+    expected_route: contamination_rejection
+    expected_output_type: invalid_run_notice
+    required_patterns:
+      - contaminated
+      - grading-card
+      - re-run
+    forbidden_patterns:
+      - 算通过
+      - 可以发布
+    assertions:
+      - type: contamination_control
+        value: rejects leaked grading-card outputs
+    tags:
+      - contamination
+      - release-risk

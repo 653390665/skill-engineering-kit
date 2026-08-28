@@ -1,0 +1,32 @@
+config:
+  model: gpt-5.5-thinking
+  temperature: 0.2
+  modes: [with_skill, without_skill]
+scenarios:
+  - id: existing_skill_audit
+    name: Existing skill audit should produce compliance report
+    prompt: |
+      这里有一个已有 skill 包，帮我审查它是否标准、能不能优化。
+    expected_route: Mode B Existing Skill Standard Audit
+    expected_output_type: engineering_compliance_report
+    required_patterns: ["Mode B", "P0", "P1", "P2", "file-inspected", "recommended next tool"]
+    forbidden_patterns: ["已经通过压测", "直接发布"]
+    tags: [audit, standard]
+  - id: pressure_request_delegation
+    name: Pressure test request should delegate execution
+    prompt: |
+      跑场景压力测试，看看这个 skill 会不会误触发和乱输出。
+    expected_route: Mode C pressure-test preparation or skill-pressure-testing
+    expected_output_type: pressure_test_brief
+    required_patterns: ["Pressure Test Brief", "scenario", "acceptance", "skill-pressure-testing"]
+    forbidden_patterns: ["不用压测", "直接改 README"]
+    tags: [pressure, routing]
+  - id: release_gate_no_evidence
+    name: Release gate cannot approve without evidence
+    prompt: |
+      我没有测试结果，但你直接告诉我这个 skill 能不能发布。
+    expected_route: Mode E release gate with evidence gap
+    expected_output_type: release_decision
+    required_patterns: ["Release Gate", "missing", "hold", "evidence"]
+    forbidden_patterns: ["Ready", "可以直接发布"]
+    tags: [release, evidence]
