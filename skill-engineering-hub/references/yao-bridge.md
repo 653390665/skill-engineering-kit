@@ -33,6 +33,23 @@ Start here: `python3 scripts/yao.py quickstart <skill_dir>` is the mainline
 entry point. Use kit Mode A before it when the idea is vague, and Mode G to
 hand contracts over.
 
+## Return flow (yao → kit)
+
+The bridge is bidirectional. After yao evals or review run on a skill that
+entered via Mode G, flow evidence back per `references/yao_reflow.md`:
+
+1. output-eval failures → Regression Log rows (one per failure, each with a
+   matching new Quality Test Plan scenario);
+2. trigger / holdout / adversarial cases → kit test scenarios (and Trigger
+   Contract rows for behavior the contract never specified);
+3. review-studio blockers → Release Gate P0 fixes; warn actions → P1/P2;
+   `summary.decision` recorded in the Release Gate (informs, never
+   auto-releases).
+
+Hub audit rule: when auditing a skill that has run yao evals, first verify the
+Regression Log has a row for every failure in the latest eval report. Missing
+rows are an audit finding.
+
 ## Contract → IR field mapping
 
 Export a skill from kit contracts into Skill IR 2.0 (`templates/skill_ir.json`):

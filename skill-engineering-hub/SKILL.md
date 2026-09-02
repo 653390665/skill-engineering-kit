@@ -161,7 +161,7 @@ Output:
 - `skill-ir.json` generated from `templates/skill_ir.json` (schema 2.0.0)
 - validation result from `scripts/validate_ir.py`
 - handoff checklist (what yao will compile, eval, and gate)
-- return-map: which yao outputs feed back into Regression Log / Release Gate / test scenarios
+- return-map: which yao outputs feed back into Regression Log / Release Gate / test scenarios (see `references/yao_reflow.md`)
 
 Never export a skill that has not completed the five contracts — export without
 contracts is how skills rot. For the full field mapping and protocols, read

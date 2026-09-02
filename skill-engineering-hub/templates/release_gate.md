@@ -30,6 +30,15 @@
 - Quality Test Plan:
 - Regression Log:
 
+## Yao review evidence (optional — only when the skill ran through yao)
+- Eval report path (reports/provider_output_evaluation.json):
+- Eval summary.failure_count:
+- Regression Log rows added for failures:
+- Review studio path (reports/review-studio.json):
+- Yao summary.decision (ship / review / hold / block):
+- Yao blockers → P0 fixes:
+- Yao review_actions (warn) → P1 fixes:
+
 ## Decision
 - Release / Patch / Hold / Rollback:
 
