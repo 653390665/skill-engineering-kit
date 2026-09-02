@@ -17,6 +17,7 @@
 - `prompts/04_result_interpretation.md`
 - `prompts/05_release_gate.md`
 - `prompts/06_toolchain_workflow.md`
+- `prompts/07_yao_bridge.md`
 
 ## Templates
 
@@ -30,6 +31,7 @@
 - `templates/optimization_report.md`
 - `templates/release_gate.md`
 - `templates/regression_log.md`
+- `templates/skill_ir.json`
 
 ## References
 
@@ -37,12 +39,14 @@
 - `references/tool_responsibility_matrix.md`
 - `references/standard_vs_pressure_testing.md`
 - `references/priority_taxonomy.md`
+- `references/yao-bridge.md`
 
 ## Scripts
 
 - `scripts/lint_skill_package.py` — static package lint.
 - `scripts/scaffold_report.py` — create report skeletons from a target skill path.
 - `scripts/build_clean_install.py` — optional clean package builder.
+- `scripts/validate_ir.py` — validate skill-ir.json against Skill IR 2.0 required fields.
 
 ## Examples
 

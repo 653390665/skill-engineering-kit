@@ -51,3 +51,26 @@ Expected:
 - Ask for or inspect package/test results.
 - Output release / patch / hold / rollback.
 - Include install, trigger, output, safety, regression, and packaging checks.
+
+## Test 6 — Skill IR export requires contracts
+
+Prompt:
+> Export this skill to yao-meta-skill. Here is a half-finished idea only.
+
+Expected:
+- Use Skill IR Export & Yao Handoff mode.
+- Refuse to export because the five contracts are missing.
+- Route back to New Skill Planning (Mode A).
+- Do not generate skill-ir.json from an undesigned skill.
+
+## Test 7 — Skill IR export produces validated IR
+
+Prompt:
+> Here are the five contracts for my skill. Export it to yao for compilation.
+
+Expected:
+- Use Skill IR Export & Yao Handoff mode.
+- Fill `templates/skill_ir.json` from the contracts.
+- Validate with `scripts/validate_ir.py` and report the result honestly.
+- Produce handoff checklist + return-map.
+- Do not claim yao ran evals unless yao actually ran them.

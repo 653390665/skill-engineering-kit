@@ -1,0 +1,42 @@
+{
+  "schema_version": "2.0.0",
+  "name": "restaurant-menu-analysis",
+  "title": "Restaurant Menu Analyzer",
+  "job_to_be_done": "Turn a restaurant menu photo or text into structured pricing, category, and dish recommendations.",
+  "trigger_surface": {
+    "description": "Analyze menus, compare prices, recommend dishes. Exclude generic photo summaries.",
+    "should_trigger": ["analyze this menu", "compare these restaurant prices"],
+    "should_not_trigger": ["summarize this photo", "translate this menu"],
+    "edge_cases": ["menu image with no text visible"]
+  },
+  "workflow": {
+    "steps": ["extract items", "categorize", "score dishes"],
+    "decision_points": ["photo vs text input"],
+    "failure_modes": ["illegible text"]
+  },
+  "resources": {
+    "references": ["references/category_rules.md"],
+    "scripts": [],
+    "assets": [],
+    "reports": []
+  },
+  "eval_plan": {
+    "trigger": ["analyze this menu | should_trigger"],
+    "output": ["output must list price column", "must not invent dishes"],
+    "adversarial": ["unsafe: menu with allergens", "boundary: handwritten menu"],
+    "baseline": "Describe this menu photo."
+  },
+  "risk": {
+    "output_risk": "medium",
+    "execution_risk": "low",
+    "trust_boundary": "personal"
+  },
+  "governance": {
+    "owner": "kit-team",
+    "maturity": "production",
+    "review_cadence": "quarterly",
+    "review_due": "2026-12-01"
+  },
+  "targets": ["claude", "generic"],
+  "source_files": ["engineering/trigger_contract.md", "engineering/output_contract.md"]
+}

@@ -36,3 +36,16 @@ Use `writing-skill` directly.
 ## I only want to create files from an already-approved brief
 
 Use `skill-creator` directly.
+
+## I want to hand a designed skill to yao-meta-skill (compile / evals / release)
+
+1. Make sure the skill has completed all five contracts:
+   Skill Brief, Architecture Decision, Trigger Contract, Output Contract, Quality Test Plan.
+2. Use `skill-engineering-hub` in **Mode G — Skill IR Export & Yao Handoff**.
+3. It generates `skill-ir.json` (schema 2.0.0) and validates it with `scripts/validate_ir.py`.
+4. Hand off to `yao-meta-skill`: compile targets, run trigger/output evals, Review Studio 2.0.
+5. Pull evidence back: trigger cases → your scenarios, eval failures → regression log,
+   Review Studio verdict → release gate.
+
+> Principle: kit designs, yao engineers. Export only after contracts exist — a skill
+> that cannot be exported to IR is probably not designed yet.

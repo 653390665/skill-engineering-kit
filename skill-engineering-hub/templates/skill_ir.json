@@ -1,0 +1,64 @@
+{
+  "schema_version": "2.0.0",
+  "name": "TODO-skill-name",
+  "title": "TODO Human-readable title",
+  "job_to_be_done": "TODO From Skill Brief: the recurring job this skill owns",
+  "trigger_surface": {
+    "description": "TODO Frontmatter-style trigger description",
+    "should_trigger": [
+      "TODO From Trigger Contract: positive trigger 1",
+      "TODO positive trigger 2"
+    ],
+    "should_not_trigger": [
+      "TODO From Trigger Contract: negative trigger 1",
+      "TODO negative trigger 2"
+    ],
+    "edge_cases": [
+      "TODO From Trigger Contract: ambiguous trigger / neighbor routing 1"
+    ]
+  },
+  "workflow": {
+    "steps": [
+      "TODO From Architecture Decision: step 1",
+      "TODO step 2"
+    ],
+    "decision_points": [
+      "TODO decision point 1"
+    ],
+    "failure_modes": [
+      "TODO likely failure mode 1"
+    ]
+  },
+  "resources": {
+    "references": [],
+    "scripts": [],
+    "assets": [],
+    "reports": []
+  },
+  "eval_plan": {
+    "trigger": [
+      "TODO From Trigger Contract trigger tests: prompt | expected route"
+    ],
+    "output": [
+      "TODO From Output Contract: required-output assertion 1",
+      "TODO forbidden-output assertion 1"
+    ],
+    "adversarial": [
+      "TODO From Quality Test Plan: unsafe / boundary / regression case 1"
+    ],
+    "baseline": "TODO Baseline prompt shape for without-skill A/B comparison"
+  },
+  "risk": {
+    "output_risk": "low",
+    "execution_risk": "low",
+    "trust_boundary": "personal"
+  },
+  "governance": {
+    "owner": "TODO owner",
+    "maturity": "scaffold",
+    "review_cadence": "TODO e.g. quarterly",
+    "review_due": "TODO ISO date"
+  },
+  "targets": [],
+  "source_files": []
+}

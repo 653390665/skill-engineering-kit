@@ -24,7 +24,7 @@ This kit supplies the missing process.
 
 | Skill | Role |
 |---|---|
-| **`skill-engineering-hub`** | Orchestrator. Determines which stage a skill is in and routes to the right next action (Mode A–F). |
+| **`skill-engineering-hub`** | Orchestrator. Determines which stage a skill is in and routes to the right next action (Mode A–G). |
 | **`skill-engineering-standard`** | The rulebook. Lifecycle, required design artifacts, packaging rules, release gates. |
 | **`skill-pressure-testing`** | The gate. Scenario design, regression/contamination control, and release readiness. |
 
@@ -48,6 +48,16 @@ They are designed to be installed together and invoke each other by name.
 The core rule: **do not start from `SKILL.md`.** Steps 1–5 are the design
 contract; the file is an implementation detail that comes later.
 
+### Optional: yao-meta-skill backend (Mode G)
+
+For multi-platform distribution, provider evals, or governed release, the hub
+can export the five contracts into **Skill IR 2.0** (`skill-ir.json`) and hand
+off to [`yao-meta-skill`](https://github.com/yaojingang/yao-meta-skill) — the
+"Skill OS" that compiles IR to platform packages, runs trigger/output evals and
+blind A/B, and gates release through Review Studio 2.0. Evidence flows back:
+trigger cases → test scenarios, eval failures → regression log, review verdict
+→ release gate. Kit designs; yao engineers. See `references/yao-bridge.md`.
+
 ## Prerequisites
 
 Two collaborator skills are referenced by the workflow but are **not included
@@ -67,7 +77,7 @@ pip install skill-eval
 ```
 skill-engineering-kit/
 ├── skill-engineering-standard/    # lifecycle + contracts + packaging rules
-├── skill-engineering-hub/         # workflow router (Modes A–F)
+├── skill-engineering-hub/         # workflow router (Modes A–G) + Skill IR export
 ├── skill-pressure-testing/        # scenario design + release gate
 ├── tests/scenarios/               # acceptance criteria + scenarios for the 3 skills
 ├── evidence/                      # controlled with/without behaviour runs

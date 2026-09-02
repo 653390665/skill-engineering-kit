@@ -1,9 +1,9 @@
 ---
 name: skill-engineering-hub
-description: Use when the user wants to plan, standardize, audit, pressure-test, or optimize a skill engineering workflow. This skill coordinates skill-creator, writing-skill, skill-engineering-standard, and skill-pressure-testing by producing creation briefs, architecture decisions, trigger/output contracts, quality test plans, pressure-test briefs, optimization reports, and release decisions. It does not replace skill-creator for generating files, writing-skill for prose polishing, or skill-pressure-testing for scenario execution.
+description: Use when the user wants to plan, standardize, audit, pressure-test, or optimize a skill engineering workflow. This skill coordinates skill-creator, writing-skill, skill-engineering-standard, and skill-pressure-testing by producing creation briefs, architecture decisions, trigger/output contracts, quality test plans, pressure-test briefs, optimization reports, and release decisions. It also exports skill contracts to yao-meta-skill Skill IR 2.0 for compilation, evals, and governed release (Mode G). It does not replace skill-creator for generating files, writing-skill for prose polishing, skill-pressure-testing for scenario execution, or yao-meta-skill for IR compilation and release governance.
 metadata:
-  version: "1.0.0"
-  updated: "2026-05-16"
+  version: "1.2.0"
+  updated: "2026-09-03"
 ---
 
 # Skill Engineering Hub
@@ -134,6 +134,34 @@ Output:
 - tool responsibility table
 - handoff artifacts
 - failure recovery process
+
+### Mode G — Skill IR Export & Yao Handoff
+
+Use when the user asks to:
+
+- export a designed skill to yao-meta-skill for compilation, evals, or governed release;
+- build a platform-neutral capability contract (Skill IR) from completed kit contracts;
+- hand off contracts to yao-meta-skill (compile → trigger/output evals → Review Studio);
+- pull yao eval/failure/release evidence back into kit artifacts.
+
+Prerequisites (from kit Steps 1–5, must all exist before export):
+
+- Skill Brief
+- Architecture Decision
+- Trigger Contract
+- Output Contract
+- Quality Test Plan
+
+Output:
+
+- `skill-ir.json` generated from `templates/skill_ir.json` (schema 2.0.0)
+- validation result from `scripts/validate_ir.py`
+- handoff checklist (what yao will compile, eval, and gate)
+- return-map: which yao outputs feed back into Regression Log / Release Gate / test scenarios
+
+Never export a skill that has not completed the five contracts — export without
+contracts is how skills rot. For the full field mapping and protocols, read
+`references/yao-bridge.md`.
 
 ---
 
