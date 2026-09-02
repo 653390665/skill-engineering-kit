@@ -37,6 +37,13 @@ Existing Skill Standard Audit (Mode B). Never export an undesigned skill.
 3. **Validate.** Run `scripts/validate_ir.py skill-ir.json`. Fix all errors
    before handoff. The script enforces required fields and enums from yao
    schema 2.0.0 and rejects leftover `TODO` placeholders.
+   If the target skill has a `SKILL.md`, also run the drift check —
+   yao **blocks compilation** when IR `trigger_surface.description` drifts from
+   the `SKILL.md` frontmatter description:
+   ```text
+   python3 scripts/validate_ir.py skill-ir.json --skill-md <target>/SKILL.md
+   ```
+   Keep the same description sentence in both places.
 
 4. **Handoff checklist.** Produce a short checklist of what yao will do:
    - compile targets (claude / openai / codex / generic — only requested ones);

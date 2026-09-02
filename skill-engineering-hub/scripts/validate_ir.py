@@ -4,10 +4,18 @@ required-field contract (schema_version 2.0.0).
 
 This is a lightweight structural check, not a full JSON Schema validator.
 It enforces the same required fields and enums as yao's skill-ir/schema.json.
+
+Optional drift check (recommended before yao handoff):
+    python3 scripts/validate_ir.py skill-ir.json --skill-md SKILL.md
+yao blocks compilation when IR trigger_surface.description drifts from the
+SKILL.md frontmatter description, so both must match exactly (normalized).
 """
 
+import argparse
 import json
+import re
 import sys
+from pathlib import Path
 
 REQUIRED = [
     "schema_version",
@@ -57,8 +65,47 @@ def check_strings(obj, fields, path):
     return errors
 
 
-def main(path):
-    with open(path, "r", encoding="utf-8") as fh:
+def normalize(text):
+    return re.sub(r"\s+", " ", str(text or "")).strip().strip('"').strip("'")
+
+
+def read_frontmatter_description(skill_md):
+    text = Path(skill_md).read_text(encoding="utf-8", errors="replace")
+    if not text.startswith("---"):
+        return None
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        return None
+    for line in parts[1].splitlines():
+        if line.strip().startswith("description:"):
+            return line.split(":", 1)[1].strip().strip('"').strip("'")
+    return None
+
+
+def check_description_drift(data, skill_md):
+    """yao blocks compile when IR description drifts from SKILL.md frontmatter."""
+    errors = []
+    fm = read_frontmatter_description(skill_md)
+    if fm is None:
+        return ["--skill-md given but no frontmatter description found in SKILL.md"]
+    ir_desc = normalize(data.get("trigger_surface", {}).get("description"))
+    if normalize(fm) != ir_desc:
+        errors.append(
+            "description drift: IR trigger_surface.description must exactly match "
+            "SKILL.md frontmatter description (yao blocks compile otherwise)\n"
+            f"    SKILL.md: {normalize(fm)}\n"
+            f"    IR:       {ir_desc}"
+        )
+    return errors
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Validate skill-ir.json (schema 2.0.0)")
+    parser.add_argument("ir_path", help="path to skill-ir.json")
+    parser.add_argument("--skill-md", help="optional SKILL.md path for description drift check")
+    args = parser.parse_args(argv)
+
+    with open(args.ir_path, "r", encoding="utf-8") as fh:
         data = json.load(fh)
 
     errors = []
@@ -92,6 +139,9 @@ def main(path):
     if PLACEHOLDER in json.dumps(data, ensure_ascii=False):
         errors.append(f"still contains {PLACEHOLDER!r} placeholders — fill from kit contracts first")
 
+    if args.skill_md:
+        errors += check_description_drift(data, args.skill_md)
+
     if errors:
         print("INVALID skill-ir.json")
         for e in errors:
@@ -102,4 +152,5 @@ def main(path):
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1]))
+    sys.exit(main())
+

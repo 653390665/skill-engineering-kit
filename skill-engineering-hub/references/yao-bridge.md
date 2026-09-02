@@ -54,14 +54,33 @@ Export a skill from kit contracts into Skill IR 2.0 (`templates/skill_ir.json`):
 2. Generate `skill-ir.json` from `templates/skill_ir.json`.
 3. Validate against yao schema 2.0.0:
    `python3 scripts/validate_ir.py skill-ir.json`
-4. Hand off to yao-meta-skill: compile, run trigger/output evals, run Review Studio.
+4. Place the IR where yao's resolver expects it (see constraints below).
+5. Hand off to yao-meta-skill (Python 3.10+ required — yao scripts use `X | None`
+   type syntax; on macOS use `python3.13` / `python3.12`, not system `python3` 3.9):
    ```text
-   # inside yao-meta-skill
-   python3 scripts/compile_skill.py --ir skill-ir.json
-   python3 scripts/yao.py trigger-eval --self
-   python3 scripts/yao.py output-exec --self
-   python3 scripts/yao.py review-studio --self
+   # inside yao-meta-skill — both entry points work; the unified CLI is preferred
+   python3 scripts/yao.py compile-skill <skill_dir> --target claude --output-json out.json
+   python3 scripts/yao.py skill-ir <skill_dir> --validate-only
+   python3 scripts/yao.py output-eval <skill_dir>
+   python3 scripts/yao.py review-studio <skill_dir>
    ```
+
+## Verified integration constraints (tested against yao repo @ main)
+
+These were discovered by real handoff testing, not from docs alone:
+
+| # | Constraint | Detail |
+|---|---|---|
+| 1 | IR discovery path | yao resolves IR from, in order: `manifest.json` → `skill_ir_source`, `reports/skill-ir.json`, or `skill-ir/examples/{name}.json`. The directory name must equal the skill name. |
+| 2 | Name identity | IR `name` must equal the directory name AND `SKILL.md` frontmatter `name`. Mismatch → `name-mismatch` error. |
+| 3 | **Description drift check** | IR `trigger_surface.description` must **exactly match** (normalized) `SKILL.md` frontmatter `description`. Mismatch → `description-mismatch` error and compile is blocked. Keep them in sync — put the same sentence in both places. |
+| 4 | Targets declared | Compiler warns if `--target` is not listed in IR `targets[]`. Declare your targets in the IR. |
+| 5 | Python version | Requires Python 3.10+. macOS system `python3` is often 3.9 → use `python3.13`/`python3.12`. |
+| 6 | Schema strictness | `schema.json` uses `additionalProperties: false` — no unknown top-level fields. `targets[]` and `source_files[]` are legal optional arrays. |
+
+Verified end-to-end: kit `example_skill_ir.json` (restaurant-menu-analysis) passed
+`find_skill_ir` schema validation and compiled to a Claude target contract with
+0 failures / 0 warnings via both `compile_skill.py` and `yao.py compile-skill`.
 
 ## Return protocol (yao → kit)
 
