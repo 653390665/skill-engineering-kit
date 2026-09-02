@@ -58,6 +58,35 @@ blind A/B, and gates release through Review Studio 2.0. Evidence flows back:
 trigger cases → test scenarios, eval failures → regression log, review verdict
 → release gate. Kit designs; yao engineers. See `references/yao-bridge.md`.
 
+## Positioning: this kit vs yao-meta-skill
+
+`yao-meta-skill` (YAO = Yielding AI Outcomes) is a heavyweight, star-heavy
+"Skill OS": Skill IR, multi-target compilers, an Output Eval Lab, Review Studio
+2.0, and SkillOps telemetry. This kit is the **design discipline layer** — the
+part of the pipeline yao deliberately does not own.
+
+| | **this kit** | **yao-meta-skill** |
+|---|---|---|
+| Job | Make authors **think first** — contracts before files | Make skills **buildable at scale** — compile, eval, govern |
+| Core principle | Do not start from `SKILL.md` | Model once, compile for many targets |
+| Form | 3 self-contained Markdown skills, zero runtime deps | Python toolchain + IR schema + compilers + eval lab |
+| Where it wins | Authoring discipline, regression memory, team process | Multi-platform packaging, provider evals, release governance |
+| Ecosystem fit | Design front-end (what to build) | Engineering back-end (how to ship) |
+
+**The niche statement:** this kit is the *methodology upstream* of the skill
+ecosystem. yao answers "given a contract, how do I compile, evaluate, and
+ship it?" This kit answers the harder question: "how do I know the contract is
+worth compiling?" A skill that cannot be exported to Skill IR (Mode G) is a
+skill that was never designed — and that is exactly what this kit exists to
+catch, before yao's compilers ever run.
+
+They do not compete: they slot into the same pipeline, and the handoff is
+engineered at the field level (Trigger Contract ↔ `trigger_surface`, Output
+Contract ↔ `eval_plan`, Release Gate ↔ `governance`). Integration is verified
+against yao `@main`: a kit-generated IR resolves via yao's `find_skill_ir`,
+passes official schema validation, and compiles for `claude` + `generic` with
+0 failures / 0 warnings (2026-09-03).
+
 ## Prerequisites
 
 Two collaborator skills are referenced by the workflow but are **not included
