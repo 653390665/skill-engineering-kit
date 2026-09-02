@@ -7,7 +7,7 @@
 | skill-creator | Create skill files and directory structure | Decide release readiness |
 | writing-skill | Improve wording, README, examples, and documentation clarity | Define architecture or safety boundaries alone |
 | skill-pressure-testing | Run pressure tests, regression checks, security checks, release checks | Replace creation planning |
-| yao-meta-skill (optional backend) | Compile Skill IR to platform packages; run trigger/output evals, blind A/B, Review Studio 2.0 gates; publish governance evidence | Replace design contracts — it consumes kit contracts via Skill IR, it does not invent them |
+| yao-meta-skill (creation mainline) | Author, compile, eval, and govern skills via Skill IR (quickstart → skill-ir → compile-skill → output-eval → review-studio) | Design skills for you — it consumes kit contracts via Mode G, it does not replace the design discipline |
 
 ## Kit ↔ yao handoff
 

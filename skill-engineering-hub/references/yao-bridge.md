@@ -14,16 +14,24 @@ gate page, and SkillOps telemetry.
 This kit is the **design discipline layer**: contracts, gates, and regression
 evidence that force authors to think before writing files.
 
-## Division of labor
+## Division of labor — yao is the mainline, kit is the supplement
 
-| Stage | This kit | yao-meta-skill |
+`yao-meta-skill` is the **creation mainline** (author → compile → eval →
+govern). This kit is the **supplementary discipline layer**: it makes authors
+design before the mainline models, and it remembers what releases teach.
+
+| Stage | yao-meta-skill (mainline) | this kit (supplement) |
 |---|---|---|
-| 1–5 Design contracts | Skill Brief → Architecture Decision → Trigger Contract → Output Contract → Quality Test Plan | — |
-| 6 Model once | — | Skill IR (`skill-ir.json`, schema 2.0.0) |
-| 7 Compile | — | Compiler / cross-packager → per-platform packages |
-| 8 Evaluate | pressure-testing (scenario runs) | Output Eval Lab (trigger cases, adversarial, holdout, blind A/B) |
-| 9 Govern | Release Gate (release/patch/hold/rollback) | Review Studio 2.0, promotion policy, trust reports |
-| 10 Remember | Regression Log | failures library, drift telemetry |
+| 0 Design discipline | — | Skill Brief → Architecture Decision → Trigger Contract → Output Contract → Quality Test Plan (Mode A, before modeling) |
+| 1 Model once | Skill IR (`skill-ir.json`, schema 2.0.0) | Mode G bridge: export the five contracts into IR |
+| 2 Compile | Compiler / cross-packager → per-platform packages | — |
+| 3 Evaluate | Output Eval Lab (trigger cases, adversarial, holdout, blind A/B) | pressure-testing (scenario runs) feeds scenarios; eval failures → Regression Log |
+| 4 Govern | Review Studio 2.0, promotion policy, trust reports | Release Gate (release/patch/hold/rollback) consumes review evidence |
+| 5 Remember | failures library, drift telemetry | Regression Log (every failure → future test) |
+
+Start here: `python3 scripts/yao.py quickstart <skill_dir>` is the mainline
+entry point. Use kit Mode A before it when the idea is vague, and Mode G to
+hand contracts over.
 
 ## Contract → IR field mapping
 
@@ -48,9 +56,10 @@ Export a skill from kit contracts into Skill IR 2.0 (`templates/skill_ir.json`):
 | Target platforms | `targets[]` | e.g. `claude`, `openai`, `codex`, `generic` (optional) |
 | Source contracts | `source_files[]` | Paths of the kit contract files that produced this IR (optional) |
 
-## Handoff protocol (kit → yao)
+## Handoff protocol (kit → yao mainline)
 
-1. Complete kit Steps 1–5 (all five contracts must exist).
+1. (Optional but recommended) Complete kit Mode A contracts when the idea is
+   vague — the five contracts are the discipline front-end.
 2. Generate `skill-ir.json` from `templates/skill_ir.json`.
 3. Validate against yao schema 2.0.0:
    `python3 scripts/validate_ir.py skill-ir.json`

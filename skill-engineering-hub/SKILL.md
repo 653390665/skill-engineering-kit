@@ -137,14 +137,18 @@ Output:
 
 ### Mode G — Skill IR Export & Yao Handoff
 
+`yao-meta-skill` is the creation mainline (author → compile → eval → govern).
+Mode G is this kit's engineered bridge into that mainline: it exports the five
+kit contracts into Skill IR 2.0 and returns yao evidence into kit artifacts.
+
 Use when the user asks to:
 
 - export a designed skill to yao-meta-skill for compilation, evals, or governed release;
 - build a platform-neutral capability contract (Skill IR) from completed kit contracts;
-- hand off contracts to yao-meta-skill (compile → trigger/output evals → Review Studio);
+- hand contracts into the yao mainline (`quickstart` → `skill-ir` → `compile-skill` → `output-eval` → `review-studio`);
 - pull yao eval/failure/release evidence back into kit artifacts.
 
-Prerequisites (from kit Steps 1–5, must all exist before export):
+Prerequisites (from kit Mode A, must all exist before export):
 
 - Skill Brief
 - Architecture Decision

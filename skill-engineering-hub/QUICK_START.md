@@ -1,8 +1,8 @@
 # Quick Start
 
-## I want to create a new skill
+## I want to create a new skill (kit-first path)
 
-Use this order:
+Use this order when you want the design discipline layer to lead:
 
 1. Use `skill-engineering-hub` to generate:
    - Skill Brief
@@ -14,6 +14,27 @@ Use this order:
 3. Use `writing-skill` to polish README, examples, and user-facing docs.
 4. Use `skill-pressure-testing` to pressure test.
 5. Use `skill-engineering-hub` again to interpret failures and decide release status.
+
+## I want to create a skill (yao mainline path)
+
+`yao-meta-skill` is the creation mainline. When you just say "create a skill
+from this workflow" or "improve this skill", the mainline is:
+
+```bash
+# inside yao-meta-skill (Python 3.10+; use python3.13 on macOS)
+python3 scripts/yao.py quickstart <skill_dir>        # intent dialogue → package
+python3 scripts/yao.py skill-ir <skill_dir>          # model once (Skill IR 2.0)
+python3 scripts/yao.py compile-skill <skill_dir> --target claude --target generic
+python3 scripts/yao.py output-eval <skill_dir>       # trigger + output evals
+python3 scripts/yao.py review-studio <skill_dir>     # one-page release gate
+```
+
+Use this kit as the supplement around that mainline:
+
+- idea vague? run `skill-engineering-hub` Mode A first (five contracts);
+- contracts ready? run Mode G to export them into `skill-ir.json` for the mainline;
+- review keeps failing? feed `output-eval` failures into the Regression Log,
+  then re-run Mode A to tighten the contracts.
 
 ## I already have a skill and want to optimize it
 
