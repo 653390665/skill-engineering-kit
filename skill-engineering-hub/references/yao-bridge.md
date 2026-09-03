@@ -50,6 +50,16 @@ Hub audit rule: when auditing a skill that has run yao evals, first verify the
 Regression Log has a row for every failure in the latest eval report. Missing
 rows are an audit finding.
 
+## Required export artifacts (Mode G emits BOTH)
+
+1. `skill-ir.json` — kit-contract IR for humans and `validate_ir.py`.
+2. `evals/trigger_cases.json` — yao's consumption format. `export_skill_ir.py`
+   reads ONLY this file (keys: `should_trigger`, `should_not_trigger`,
+   `near_neighbor`) when modeling trigger_surface; without it yao collapses
+   the trigger surface to `[description] / [] / []`. Map kit Trigger Contract
+   rows 1:1 and mirror `edge_cases` under the `near_neighbor` key (yao reads
+   that name; keep both keys in the file).
+
 ## Contract → IR field mapping
 
 Export a skill from kit contracts into Skill IR 2.0 (`templates/skill_ir.json`):

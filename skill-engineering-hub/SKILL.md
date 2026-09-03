@@ -161,6 +161,10 @@ Output:
 - `skill-ir.json` generated from `templates/skill_ir.json` (schema 2.0.0)
 - validation result from `scripts/validate_ir.py`
 - handoff checklist (what yao will compile, eval, and gate)
+- `evals/trigger_cases.json` — yao's trigger-surface consumption format (keys:
+  `should_trigger` / `should_not_trigger` / `near_neighbor`, 1:1 from the
+  Trigger Contract; without it yao's modeler collapses the surface to a single
+  description line)
 - return-map: which yao outputs feed back into Regression Log / Release Gate / test scenarios (see `references/yao_reflow.md`)
 
 Never export a skill that has not completed the five contracts — export without
