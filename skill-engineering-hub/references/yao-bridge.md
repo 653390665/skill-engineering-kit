@@ -33,6 +33,14 @@ Start here: `python3 scripts/yao.py quickstart <skill_dir>` is the mainline
 entry point. Use kit Mode A before it when the idea is vague, and Mode G to
 hand contracts over.
 
+## Known schema drift (kit IR ⊃ yao IR)
+
+The kit validator accepts optional fields yao's strict IR schema rejects as
+`additional property forbidden`: `eval_plan.fixtures`, `governance.notes`,
+`risk.notes`. Do not emit them in `skill-ir.json` intended for yao handoff
+(keep such notes in the contract Markdown instead). If yao's
+`SkillIRResolutionError` names these fields, this drift is the cause.
+
 ## Return flow (yao → kit)
 
 The bridge is bidirectional. After yao evals or review run on a skill that
